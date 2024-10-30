@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
 public interface IGate{
     public void updateGate();
-    public GateInput[] inputs{get; set;}
-    public GateInput[] outputs{get; set;}
+    List<GateInput> inputs { get; set; }
+    List<GateOutput> outputs { get; set; }
 
 }
 
