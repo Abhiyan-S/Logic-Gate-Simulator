@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 20
-  scrollSensitivity: 20
+  scrollSensitivity: 200
 --- !u!1 &554374204
 GameObject:
   m_ObjectHideFlags: 0

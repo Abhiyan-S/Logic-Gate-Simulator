@@ -10,13 +10,13 @@ public class Cam : MonoBehaviour
     void Update()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-
+        transform.position += new Vector3(0 ,0, scroll * scrollSensitivity) * Time.deltaTime;
         if(Input.GetMouseButton(2)){
             x = Input.GetAxis("Mouse X");
             y = Input.GetAxis("Mouse Y");
 
             Vector2 dir = new Vector2(-x,-y);
-            transform.position = transform.position + (new Vector3(dir.x,dir.y, scroll * scrollSensitivity) * Time.deltaTime * sensitivity);
+            transform.position = transform.position + (new Vector3(dir.x,dir.y, 0) * Time.deltaTime * sensitivity);
         }
     }
 }
