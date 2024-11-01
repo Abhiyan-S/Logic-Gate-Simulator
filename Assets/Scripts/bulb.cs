@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class bulb : MonoBehaviour, IGate
+public class bulb : Gate
 {
-    // Start is called before the first frame update
-    public List<GateInput> inputs { get; set; } = new List<GateInput>();
-    public List<GateOutput> outputs { get; set; } = new List<GateOutput>();
+
     [SerializeField] private GateInput input;
     private SpriteRenderer sprite;
 
@@ -17,7 +15,7 @@ public class bulb : MonoBehaviour, IGate
         inputs[0].gate = this;
         sprite = GetComponent<SpriteRenderer>();
     }
-    public void updateGate(){
+    public override void updateGate(){
         if(input.state == 1){
             sprite.color = onColor;
         }

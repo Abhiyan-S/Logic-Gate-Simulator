@@ -7,6 +7,8 @@ public class button : MonoBehaviour
     [SerializeField] private List <GateOutput> outputs = new List<GateOutput>();
     private int state{get; set;} = 0;
     [SerializeField] private SpriteRenderer buttonSprite;
+    [SerializeField] private Color onColor;
+    [SerializeField] private Color offColor;
     // Update is called once per frame
     void Start(){
         buttonSprite = GetComponent<SpriteRenderer>();
@@ -16,11 +18,11 @@ public class button : MonoBehaviour
     {
         if(state == 0){
             state = 1;
-            buttonSprite.color = Color.blue;
+            buttonSprite.color = onColor;
         }
         else{
             state = 0;
-            buttonSprite.color = Color.red;
+            buttonSprite.color = offColor;
         }
 
         foreach(GateOutput output in outputs){
