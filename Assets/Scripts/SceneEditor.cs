@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SceneEditor : MonoBehaviour
 {
+    [SerializeField] private GameObject wireRef;
+    [Header("UI")]
+    [SerializeField] private Transform UICanvas;
+    [SerializeField] private Transform toolBox;
     private Camera cam;
-    [SerializeField] GameObject wireRef;
+    private GameManager gameManager;
     private bool drawingLine = false;
     private bool movingObj = false;
-    private Vector2 selectionOffset;
+    private Vector3 selectionOffset;
     private Wire currentWire;
-    private Transform selectedObj;
+    private ISelectable selectedObj;
     private Transform highlightedSprite;
     void detectGateOutput(Vector2 pos){
         //Ray cast from start too 0.01 unit up
@@ -22,14 +27,14 @@ public class SceneEditor : MonoBehaviour
 
         if(gateOutput != null){
 
-            currentWire = Instantiate(wireRef, gateOutput.transform.position, Quaternion.identity).GetComponent<Wire>();
+            currentWire = Instantiate(wireRef, Vector2.zero, Quaternion.identity).GetComponent<Wire>();
             currentWire.setStartPoint(gateOutput.transform.position);
             currentWire.setWireInput(gateOutput);
             drawingLine = true;
         }
         
     }
-    private void drawWire(){
+    private void DrawWire(){
         Vector2 currentPos = cam.ScreenToWorldPoint(Input.mousePosition);
         currentWire.setEndPoint(currentPos);
 
@@ -47,11 +52,16 @@ public class SceneEditor : MonoBehaviour
                 Destroy(currentWire.gameObject);
                 currentWire = null;
             }
+            if(gateInput.wire != null){// Discard if the input is already connected with a wire
+                Destroy(currentWire.gameObject);
+                currentWire = null;
+            }
             else{
                 currentWire.setEndPoint(gateInput.transform.position);
                 currentWire.setWireOutput(gateInput);
                 currentWire.wireInput.addWire(currentWire);
-            
+                gateInput.wire = currentWire;
+                currentWire.UpdateCollider();
             }
         }
     }
@@ -60,50 +70,81 @@ public class SceneEditor : MonoBehaviour
 
         //Instantiaing the highlighted sprite
         highlightedSprite = new GameObject("Highlighted").transform;
-        highlightedSprite.position = Vector2.zero;
+        highlightedSprite.position = obj.position;
+        highlightedSprite.rotation = obj.rotation;
         highlightedSprite.SetParent(obj);
         highlightedSprite.localPosition = Vector2.zero;
         //modifying the highlight
         SpriteRenderer sprite = highlightedSprite.gameObject.AddComponent<SpriteRenderer>();
-        sprite.sprite = obj.GetComponent<SpriteRenderer>().sprite;
+        sprite.sprite = obj.transform.GetComponent<SpriteRenderer>().sprite;
         sprite.color = new Color(.9f,.9f,.9f,.8f);
         sprite.sortingOrder=-1;
         highlightedSprite.localScale = new Vector2(1.1f,1.1f);
         
     }
+
+    private void CheckForWire(Transform obj, Vector2 pos){
+        Wire wire;
+        if(obj.TryGetComponent<Wire>(out wire)){
+            WireKnob knob =  wire.AddPoint(pos);
+            selectedObj = knob.GetComponent<ISelectable>();
+            highlight(knob.transform);
+            movingObj = true;
+        }
+    }
     private void select(Vector2 pos){
         RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(0,1), 0.01f);
-        if(!hit){ Debug.Log("No hit");return;}
-        if(hit.transform.CompareTag("Selectable")){
-            selectedObj = hit.transform;
-            selectionOffset = pos - new Vector2(hit.transform.position.x, hit.transform.position.y);
-            movingObj = true;
-            highlight(selectedObj);
+        if(!hit){ return;}
+
+        hit.transform.TryGetComponent<ISelectable>(out selectedObj);
+        if(selectedObj == null){
+            CheckForWire(hit.transform, pos);
+            return;
         }
+        selectionOffset = pos - new Vector2(hit.transform.position.x, hit.transform.position.y);
+        movingObj = true;
+        highlight(hit.transform);
     }
     // Start is called before the first frame update
     void Start()
     {
         cam = Camera.main;
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
+    private void HandleSelectedMovement(){
+        if(movingObj){
+            Vector3 newPos = cam.ScreenToWorldPoint(Input.mousePosition) - selectionOffset;
+            selectedObj.move(newPos);
+        }
+        if(Input.GetMouseButtonUp(0)){
+            movingObj = false;
+            selectionOffset = Vector2.zero;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)){
+        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){
+            toolBox.gameObject.SetActive(false);
             Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
             detectGateOutput(pos);
             select(pos);
         }
+        if(Input.GetMouseButtonDown(1)){
+            Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(0,1), 0.01f);
+            if(!hit){
+                toolBox.gameObject.SetActive(true);
+                toolBox.position = Input.mousePosition;
+            }
+        }
+
+
         if(drawingLine){
-            drawWire();
+            DrawWire();
         }
-        if(movingObj){
-            Vector2 newPos = cam.ScreenToWorldPoint(Input.mousePosition);
-            selectedObj.position = newPos - selectionOffset;
-        }
-        if(Input.GetMouseButtonUp(0)){
-            movingObj = false;
-        }
+        HandleSelectedMovement();
     }
 }

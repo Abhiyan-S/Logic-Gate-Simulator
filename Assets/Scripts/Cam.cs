@@ -14,13 +14,13 @@ public class Cam : MonoBehaviour
     void handleCamMovement(){
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         
-        cam.orthographicSize -= scroll * scrollSensitivity * Time.deltaTime;
+        cam.orthographicSize -= scroll * scrollSensitivity * Time.deltaTime * cam.orthographicSize * 0.1f; //It zooms depending on the current zoomed out amount. .1 is constant to make the scroll factor smaller
         if(Input.GetMouseButton(2)){
             x = Input.GetAxis("Mouse X");
             y = Input.GetAxis("Mouse Y");
 
             Vector2 dir = new Vector2(-x,-y);
-            transform.position = transform.position + (new Vector3(dir.x,dir.y, 0) * Time.deltaTime * sensitivity);
+            transform.position = transform.position + (new Vector3(dir.x,dir.y, 0) * Time.deltaTime * sensitivity * cam.orthographicSize*0.1f);
         }
     }
 
