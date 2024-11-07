@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BasicGatesButton : MonoBehaviour
+public class BasicGatesButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private BasicGatesUI basicGatesUI;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void OnPointerEnter(PointerEventData pointerData){
+        StartCoroutine(SetBasicGatesVisibility(true));
+    }
+    public void OnPointerExit(PointerEventData pointerData){
+        StartCoroutine(SetBasicGatesVisibility(false));
+    }
+    public IEnumerator SetBasicGatesVisibility(bool visible){
+        yield return new WaitForSeconds(.1f);
+        if(visible){
+            basicGatesUI.gameObject.SetActive(true);
+        }
+        else{
+            if(!basicGatesUI.mouseOver){
+                basicGatesUI.gameObject.SetActive(false);
+            }
+        }
     }
 }

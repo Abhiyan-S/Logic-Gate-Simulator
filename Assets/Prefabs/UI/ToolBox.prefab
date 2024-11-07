@@ -265,7 +265,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1318034001917230949}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 693242968295258421}
+        m_TargetAssemblyTypeName: ToolBoxScript, Assembly-CSharp
+        m_MethodName: CreateGate
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &628086864176286339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,8 +1080,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1638,14 +1650,14 @@ RectTransform:
   m_GameObject: {fileID: 5308923873690046531}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.075, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8839896332990087254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: 0}
+  m_AnchoredPosition: {x: 36.7, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5133900690876790550
@@ -1807,7 +1819,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1315373056148915067}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 693242968295258421}
+        m_TargetAssemblyTypeName: ToolBoxScript, Assembly-CSharp
+        m_MethodName: CreateGate
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6452513602031400810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1820,6 +1844,7 @@ GameObject:
   - component: {fileID: 963043865212736493}
   - component: {fileID: 1680721965977274549}
   - component: {fileID: 4766136915333974871}
+  - component: {fileID: 8630389335372688335}
   m_Layer: 5
   m_Name: BasicGatesButton
   m_TagString: Untagged
@@ -1845,8 +1870,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.49999, y: -15.44}
-  m_SizeDelta: {x: 150, y: 25}
+  m_AnchoredPosition: {x: 50, y: -15.439941}
+  m_SizeDelta: {x: 100, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &963043865212736493
 CanvasRenderer:
@@ -1930,6 +1955,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8630389335372688335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6452513602031400810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2bb2dfed6075bf4a82a26b7d4b69843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicGatesUI: {fileID: 1611341904929311665}
 --- !u!1 &6532792313386728839
 GameObject:
   m_ObjectHideFlags: 0
@@ -2023,13 +2061,14 @@ GameObject:
   - component: {fileID: 2416667305547043572}
   - component: {fileID: 7911589257158643890}
   - component: {fileID: 9045991962909021620}
+  - component: {fileID: 1611341904929311665}
   m_Layer: 5
   m_Name: BasicGates
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5800740654318963282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2102,6 +2141,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
+--- !u!114 &1611341904929311665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7191845241233716492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417ad02752f8171479c513194b1dbdde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicGatesButton: {fileID: 8630389335372688335}
+  mouseOver: 0
 --- !u!1 &7198226623869737015
 GameObject:
   m_ObjectHideFlags: 0
@@ -2114,6 +2167,8 @@ GameObject:
   - component: {fileID: 2270289970048373012}
   - component: {fileID: 7563549571176030324}
   - component: {fileID: 7284381146818751112}
+  - component: {fileID: 3069262507366688136}
+  - component: {fileID: 693242968295258421}
   m_Layer: 5
   m_Name: ToolBox
   m_TagString: Untagged
@@ -2128,7 +2183,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7198226623869737015}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2140,8 +2195,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &2270289970048373012
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2192,6 +2247,31 @@ MonoBehaviour:
   m_EffectColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!225 &3069262507366688136
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198226623869737015}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &693242968295258421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198226623869737015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d58fe6eb4aec044a7e7624d79b7070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnedWorldPosition: {x: 0, y: 0}
 --- !u!1 &7644363093162969772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,7 +2393,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2159424510513096126}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 693242968295258421}
+        m_TargetAssemblyTypeName: ToolBoxScript, Assembly-CSharp
+        m_MethodName: CreateGate
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7982350299127645291
 GameObject:
   m_ObjectHideFlags: 0

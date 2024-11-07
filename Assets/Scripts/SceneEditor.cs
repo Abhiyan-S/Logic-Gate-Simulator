@@ -5,16 +5,19 @@ using UnityEngine.EventSystems;
 
 public class SceneEditor : MonoBehaviour
 {
+    private Camera cam;
+    private GameManager gameManager;
+    [Header("Wire")]
+    private bool drawingLine = false;
+    private Wire currentWire;
     [SerializeField] private GameObject wireRef;
     [Header("UI")]
     [SerializeField] private Transform UICanvas;
-    [SerializeField] private Transform toolBox;
-    private Camera cam;
-    private GameManager gameManager;
-    private bool drawingLine = false;
+    [SerializeField] private Transform toolBoxRefrence;
+    public Transform toolBox;
+    [Header("Selection")]
     private bool movingObj = false;
     private Vector3 selectionOffset;
-    private Wire currentWire;
     private ISelectable selectedObj;
     private Transform highlightedSprite;
     void detectGateOutput(Vector2 pos){
@@ -127,7 +130,9 @@ public class SceneEditor : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()){
-            toolBox.gameObject.SetActive(false);
+            if(toolBox){
+                Destroy(toolBox.gameObject);
+            }
             Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
             detectGateOutput(pos);
             select(pos);
@@ -135,9 +140,12 @@ public class SceneEditor : MonoBehaviour
         if(Input.GetMouseButtonDown(1)){
             Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(0,1), 0.01f);
+
             if(!hit){
-                toolBox.gameObject.SetActive(true);
-                toolBox.position = Input.mousePosition;
+                if(toolBox){ Destroy(toolBox.gameObject); }
+                toolBox = Instantiate(toolBoxRefrence, Input.mousePosition, Quaternion.identity, UICanvas);
+                toolBox.GetComponent<ToolBoxScript>().spawnedWorldPosition = pos;
+                StartCoroutine(FadeInToolBox(toolBox.GetComponent<CanvasGroup>()));
             }
         }
 
@@ -146,5 +154,14 @@ public class SceneEditor : MonoBehaviour
             DrawWire();
         }
         HandleSelectedMovement();
+    }
+
+    IEnumerator FadeInToolBox(CanvasGroup toolBox){
+        float alpha = 0;
+        while(alpha <= 1){
+            toolBox.alpha = alpha;
+            alpha += 0.05f;
+            yield return new WaitForSeconds(0.005f);
+        }
     }
 }

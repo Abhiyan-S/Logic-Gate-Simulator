@@ -7,9 +7,11 @@ public class Cam : MonoBehaviour
     [SerializeField] private float sensitivity = 20f;
     [SerializeField] private float scrollSensitivity = 20f;
     private Camera cam;
+    private SceneEditor sceneEditor;
     float x,y;
     void Start(){
         cam = GetComponent<Camera>();
+        sceneEditor = FindObjectOfType<SceneEditor>();
     }
     void handleCamMovement(){
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -21,6 +23,12 @@ public class Cam : MonoBehaviour
 
             Vector2 dir = new Vector2(-x,-y);
             transform.position = transform.position + (new Vector3(dir.x,dir.y, 0) * Time.deltaTime * sensitivity * cam.orthographicSize*0.1f);
+
+            //Delete the tool box on middle mouse click
+            Transform toolBox = sceneEditor.toolBox;
+            if(toolBox){
+                Destroy(toolBox.gameObject);
+            }
         }
     }
 
