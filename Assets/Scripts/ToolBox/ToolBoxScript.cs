@@ -15,4 +15,11 @@ public class ToolBoxScript : MonoBehaviour
     public void CreateGate(int id){
         gameManager.CreateGate(id, spawnedWorldPosition);
     }
+
+    public void AddSwitch(){
+        gameManager.AddSwitch(spawnedWorldPosition);
+    }
+    public void AddOutput(){
+        gameManager.AddOutput(spawnedWorldPosition);
+    }
 }

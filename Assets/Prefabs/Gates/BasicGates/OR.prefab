@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8809296554175892342}
   - component: {fileID: 7369722996549382778}
   m_Layer: 0
-  m_Name: InputLeg2
+  m_Name: OutputLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 8214088480539686932}
   - component: {fileID: 4683864411488959772}
   m_Layer: 0
-  m_Name: OutputLeg
+  m_Name: InputLeg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -635,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7979a219188aaec41b600137da20d290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wires: []
   gate: {fileID: 0}
   state: 0
 --- !u!1 &6721718492349869836

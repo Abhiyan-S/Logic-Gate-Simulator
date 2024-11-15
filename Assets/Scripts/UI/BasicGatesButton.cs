@@ -16,12 +16,32 @@ public class BasicGatesButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public IEnumerator SetBasicGatesVisibility(bool visible){
         yield return new WaitForSeconds(.1f);
         if(visible){
-            basicGatesUI.gameObject.SetActive(true);
+            StartCoroutine(FadeInBasicGates());
         }
         else{
             if(!basicGatesUI.mouseOver){
-                basicGatesUI.gameObject.SetActive(false);
+                StartCoroutine(FadeOutBasicGates());
             }
         }
+    }
+    IEnumerator FadeInBasicGates(){
+        basicGatesUI.gameObject.SetActive(true);
+        CanvasGroup basicGates = basicGatesUI.GetComponent<CanvasGroup>();
+        float alpha = 0;
+        while(alpha <= 1){
+            basicGates.alpha = alpha;
+            alpha += 0.1f;
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    IEnumerator FadeOutBasicGates(){
+        CanvasGroup basicGates = basicGatesUI.GetComponent<CanvasGroup>();
+        float alpha = 1;
+        while(alpha >= 0){
+            basicGates.alpha = alpha;
+            alpha -= 0.1f;
+            yield return new WaitForSeconds(0.01f);
+        }
+        basicGatesUI.gameObject.SetActive(false);
     }
 }

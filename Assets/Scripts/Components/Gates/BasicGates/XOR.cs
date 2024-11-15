@@ -1,12 +1,12 @@
-public class AND : Gate
+public class XOR : Gate
 {
     void Start(){
-        base.gateName = "AND";
+        base.gateName = "XOR";
         base.Init();
     }
 
-    public static byte ANDOperation(byte a, byte b){
-        if(a == 1 && b == 1){
+    public static byte XOROperation(byte a, byte b){
+        if(a == 1 && b == 0 || a == 0 && b == 1){
             return 1;
         }
         else{
@@ -16,7 +16,7 @@ public class AND : Gate
 
     public override void updateGate()
     {
-        byte result = ANDOperation(inputs[0].state, inputs[1].state);
+        byte result = XOROperation(inputs[0].state, inputs[1].state);
         foreach(GateOutput output in outputs){
             output.sendSignal(result);
         }

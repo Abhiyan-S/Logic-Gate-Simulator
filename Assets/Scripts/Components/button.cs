@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class button : MonoBehaviour, ISelectable
 {
-    [SerializeField] private List <GateOutput> outputs = new List<GateOutput>();
+    [SerializeField] GateOutput output;
     private byte state{get; set;} = 0;
     [SerializeField] private SpriteRenderer buttonSprite;
     [SerializeField] private Color onColor;
     [SerializeField] private Color offColor;
-    // Update is called once per frame
+    
+    private bool canToggle;
     void Start(){
         buttonSprite = GetComponent<SpriteRenderer>();
     }
-    
-    public void OnMouseDown()
-    {
+    private void Toggle(){
         if(state == 0){
             state = 1;
             buttonSprite.color = onColor;
@@ -25,15 +24,35 @@ public class button : MonoBehaviour, ISelectable
             buttonSprite.color = offColor;
         }
 
-        foreach(GateOutput output in outputs){
-            output.sendSignal(state);
+        output.sendSignal(state);
+    }
+    
+    private void OnMouseDown()
+    {
+        canToggle = true;
+    }
+    private void OnMouseUp(){
+        if(canToggle){
+            Toggle();
         }
     }
     public void move(Vector2 newPos){
+        Vector2 oldPos = transform.position;
         transform.position = newPos;
-        foreach(Wire wire in outputs[0].getWires()){
-            wire.setStartPoint(outputs[0].transform.position);
+
+        if(Vector2.Distance(oldPos, newPos) >= 0.02f){
+            canToggle = false;
+        }
+        foreach(Wire wire in output.wires){
+            wire.setStartPoint(output.transform.position);
             wire.UpdateCollider();
         }
+    }
+
+    public void Delete(){
+        foreach(Wire wire in output.wires){
+            wire.DeleteWire();
+        }
+        Destroy(gameObject);
     }
 }

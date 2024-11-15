@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class NOT : Gate
 {
     public static byte NOTOperation(byte a){

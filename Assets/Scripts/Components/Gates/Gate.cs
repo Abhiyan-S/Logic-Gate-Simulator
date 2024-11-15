@@ -32,10 +32,26 @@ public class Gate : MonoBehaviour, ISelectable
             }
         }
         foreach(GateOutput output in outputs){
-            foreach(Wire wire in output.getWires()){
+            foreach(Wire wire in output.wires){
                 wire.setStartPoint(output.transform.position);
                 wire.UpdateCollider();
             }
         }
+    }
+
+    public void Delete(){
+        foreach(GateInput input in inputs){
+            if(input.wire){
+                input.wire.DeleteWire();
+            }
+        }
+        foreach(GateOutput output in outputs){
+            List<Wire> outputWires = new List<Wire>(output.wires);
+            foreach(Wire wire in outputWires){
+                wire.DeleteWire();
+            }
+        }
+
+        Destroy(gameObject);
     }
 }

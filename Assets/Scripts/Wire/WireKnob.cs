@@ -24,4 +24,8 @@ public class WireKnob : MonoBehaviour, ISelectable
     public void sendSignal(byte signal){
         outputWire.sendSignal(signal);
     }
+
+    public void Delete(){
+        
+    }
 }

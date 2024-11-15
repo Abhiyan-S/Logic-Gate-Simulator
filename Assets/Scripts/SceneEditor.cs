@@ -60,6 +60,11 @@ public class SceneEditor : MonoBehaviour
                 currentWire = null;
             }
             else{
+                WiresParent currentWireParent = new GameObject(currentWire.name).AddComponent<WiresParent>();
+                currentWire.SetParent(currentWireParent);
+                currentWireParent.startWire = currentWire;
+                currentWireParent.endWire = currentWire;
+
                 currentWire.setEndPoint(gateInput.transform.position);
                 currentWire.setWireOutput(gateInput);
                 currentWire.wireInput.addWire(currentWire);
@@ -125,6 +130,23 @@ public class SceneEditor : MonoBehaviour
             selectionOffset = Vector2.zero;
         }
     }
+    private void ActivateToolBox(Vector2 pos){
+        if(toolBox){ Destroy(toolBox.gameObject); }
+        toolBox = Instantiate(toolBoxRefrence, Input.mousePosition, Quaternion.identity, UICanvas);
+        toolBox.GetComponent<ToolBoxScript>().spawnedWorldPosition = pos;
+        StartCoroutine(FadeInToolBox(toolBox.GetComponent<CanvasGroup>()));
+    }
+
+    private void HandleRightClick(){
+        if(Input.GetMouseButtonDown(1)){
+            Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(0,1), 0.01f);
+
+            if(!hit){
+                ActivateToolBox(pos);
+            }
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -137,23 +159,19 @@ public class SceneEditor : MonoBehaviour
             detectGateOutput(pos);
             select(pos);
         }
-        if(Input.GetMouseButtonDown(1)){
-            Vector2 pos = cam.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(0,1), 0.01f);
 
-            if(!hit){
-                if(toolBox){ Destroy(toolBox.gameObject); }
-                toolBox = Instantiate(toolBoxRefrence, Input.mousePosition, Quaternion.identity, UICanvas);
-                toolBox.GetComponent<ToolBoxScript>().spawnedWorldPosition = pos;
-                StartCoroutine(FadeInToolBox(toolBox.GetComponent<CanvasGroup>()));
+        if(Input.GetKeyDown(KeyCode.Delete)){
+            if(selectedObj != null){
+                selectedObj.Delete();
+                selectedObj = null;
             }
         }
-
 
         if(drawingLine){
             DrawWire();
         }
         HandleSelectedMovement();
+        HandleRightClick();
     }
 
     IEnumerator FadeInToolBox(CanvasGroup toolBox){

@@ -1,22 +1,22 @@
-public class AND : Gate
+public class NAND : Gate
 {
     void Start(){
-        base.gateName = "AND";
+        base.gateName = "NAND";
         base.Init();
     }
 
-    public static byte ANDOperation(byte a, byte b){
+    public static byte NANDOperation(byte a, byte b){
         if(a == 1 && b == 1){
-            return 1;
+            return 0;
         }
         else{
-            return 0;
+            return 1;
         }
     }
 
     public override void updateGate()
     {
-        byte result = ANDOperation(inputs[0].state, inputs[1].state);
+        byte result = NANDOperation(inputs[0].state, inputs[1].state);
         foreach(GateOutput output in outputs){
             output.sendSignal(result);
         }

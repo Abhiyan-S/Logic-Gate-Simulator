@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Wire : MonoBehaviour
 {
-    private int state = 0;
     [SerializeField] private Transform wireKnobReference;
     private LineRenderer line;
     public GateInput wireOutput;
@@ -16,12 +15,14 @@ public class Wire : MonoBehaviour
     [SerializeField] private Color offStartColor;
     [SerializeField] private Color offEndColor;
     private EdgeCollider2D edgeCollider;
+    private WiresParent parent;
     
     void Awake(){
         line = GetComponent<LineRenderer>();
-
+        
         edgeCollider = GetComponent<EdgeCollider2D>();
     }
+
     public void UpdateCollider(){
 
         Vector3[] positions = new Vector3[line.positionCount];
@@ -53,6 +54,10 @@ public class Wire : MonoBehaviour
         line.SetPosition(index, pos);
         UpdateCollider();
     }
+    public void SetParent(WiresParent wiresParent){
+        parent = wiresParent;
+        transform.parent = wiresParent.transform;
+    }
 
     public void sendSignal(byte signal){
         if(signal == 1){
@@ -74,14 +79,18 @@ public class Wire : MonoBehaviour
         WireKnob knob = Instantiate(wireKnobReference, new Vector3(pos.x, pos.y, -0.1f), Quaternion.identity).GetComponent<WireKnob>();
         Wire newWire = Instantiate(gameObject, Vector3.zero, Quaternion.identity).GetComponent<Wire>();
 
+        knob.transform.SetParent(parent.transform);
+        newWire.SetParent(parent);
+
         setEndPoint(pos);
         newWire.setStartPoint(pos);
 
         if(wireOutput != null){
             newWire.wireOutput = wireOutput;
             wireOutput.wire = newWire;
+            parent.endWire = newWire;
         }
-        else{
+        else{// This means the end of the wire is a wire knob
             newWire.outputKnob = outputKnob;
         }
 
@@ -94,5 +103,9 @@ public class Wire : MonoBehaviour
         knob.SetWires(this, newWire);
 
         return knob;
+    }
+
+    public void DeleteWire(){
+        parent.DeleteWire();
     }
 }
